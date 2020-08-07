@@ -12,3 +12,23 @@ I need this code, but don't know where, perhaps should make some middleware, don
 
 Go code!
 */
+
+const express = require("express");
+
+//import the Routers
+const projectsRouter = require("./routers/projects-router.js");
+const actionsRouter = require("./routers/actions-router.js");
+
+//create a server
+const server = express();
+
+//middleware json
+server.use(express.json());
+
+// // use routes and endpoints
+server.use("/api/projects", projectsRouter);
+server.use("/api/projects/:id/actions", actionsRouter);
+//server listen
+server.listen(8000, () => {
+  console.log("\n*** Server Running on http://localhost:8000 ***\n");
+});
