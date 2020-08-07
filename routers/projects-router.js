@@ -44,4 +44,21 @@ router.post("/", function (req, res) {
     }
   }
 });
+
+//PUT - UPDATE - projects
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedP = req.body;
+
+  projectModel.update(id, updatedP).then((item) => {
+    if (item.id == id) {
+      res.status(201).json({ ...updatedP });
+    } else {
+      res
+        .status(500)
+        .json({ error: "null. The id was not found - status 500" });
+    }
+  });
+});
+
 module.exports = router;
