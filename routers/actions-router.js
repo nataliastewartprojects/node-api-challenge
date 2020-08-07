@@ -64,4 +64,19 @@ router.put("/:id", (req, res) => {
   });
 });
 
+//--REMOVE-DELETE - Action
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  actionModel.remove(id).then((item) => {
+    if (item == item > 0) {
+      res.status(200).json({ message: `The ACTION ${id} has been deleted` });
+    } else {
+      res.status(500).json({
+        message: "Error removing the ACTION",
+      });
+    }
+  });
+});
+
 module.exports = router;
