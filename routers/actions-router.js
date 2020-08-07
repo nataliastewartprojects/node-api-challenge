@@ -2,6 +2,7 @@ const express = require("express");
 
 //import the data base
 const actionModel = require("../data/helpers/actionModel.js");
+const projectModel = require("../data/helpers/projectModel");
 
 //import router from express
 const router = express.Router();
@@ -11,24 +12,17 @@ router.use(express.json()); //middleware JSON
 //----ENDPOINTS start here:
 
 //--GET actions
-// router.get("/", function (req, res) {
-//   const { id } = req.params;
-//   actionModel
-//     .get(id)
-//     .then((actions) => {
-//       res.status(200).json(actions);
-//     })
-//     .catch(res.status(500).json({ errorMessage: "Error to find actions" }));
-// });
 
 router.get("/", (req, res) => {
+  const projectID = req.params.id;
+
   actionModel
-    .get(req.params.id)
+    .get(projectID)
     .then((action) => {
       if (action.length === 0) {
-        res
-          .status(404)
-          .json({ message: "The post with the specified ID does not exist." });
+        res.status(404).json({
+          message: "The project with the specified ID does not have actions.",
+        });
       } else {
         res.status(200).json(action);
       }
@@ -55,4 +49,19 @@ router.post("/", (req, res) => {
       });
     });
 });
+
+//--PUT - UPDATE - ACTION
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedAction = req.body;
+
+  actionModel.update(id, updatedAction).then((item) => {
+    if (item.id == id) {
+      res.status(201).json({ ...updatedAction });
+    } else {
+      res.status(500).json({ error: "The action could not be updated" });
+    }
+  });
+});
+
 module.exports = router;
