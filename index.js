@@ -15,14 +15,19 @@ Go code!
 
 const express = require("express");
 
+//import the Routers
+const projectsRouter = require("./routers/projects-router.js");
+
 //create a server
 const server = express();
 
 //middleware json
 server.use(express.json());
 
-//server listen
+// // use routes and endpoints
+server.use("/api/projects", projectsRouter);
 
+//server listen
 server.listen(8000, () => {
   console.log("\n*** Server Running on http://localhost:8000 ***\n");
 });
